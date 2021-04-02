@@ -1,0 +1,36 @@
+insert key
+name
+5
+6
+7
+8
+9
+hard
+author
+180
+green
+black
+vatican
+7
+9
+78.0
+
+insert key
+name
+54
+65
+76
+87
+98
+hard
+authorino
+18
+red
+green
+france
+74
+94
+78.3
+Loc
+info
+print_descending

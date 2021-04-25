@@ -3,6 +3,9 @@ package commands;
 import exceptions.IncorrectScriptException;
 import utility.CollectionManager;
 
+/**
+ * This is command 'filter_greater_than_average_point'. Prints elements which 'averagePoint' is more than given.
+ */
 public class FilterGreaterThanAveragePointCommand extends AbstractCommand implements Command{
     CollectionManager collectionManager;
 
@@ -11,6 +14,9 @@ public class FilterGreaterThanAveragePointCommand extends AbstractCommand implem
         this.collectionManager = collectionManager;
     }
 
+    /**
+     * Execute of 'filter_greater_than_average_point' command.
+     */
     @Override
     public void execute(String argument) {
         float averagePoint;

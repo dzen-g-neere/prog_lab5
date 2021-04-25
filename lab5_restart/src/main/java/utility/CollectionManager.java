@@ -13,9 +13,18 @@ import java.util.*;
 public class CollectionManager {
     private HashMap<String, LabWork> labWorks = new HashMap<String, LabWork>();
     private LocalDate creationDate;
+    private FileManager fileManager;
 
-    public CollectionManager() {
+    public CollectionManager(FileManager fileManager) {
+        this.fileManager = fileManager;
         creationDate = LocalDate.now();
+    }
+
+    public void loadCollection(){
+        HashMap<String, LabWork> trr = fileManager.loadCollection();
+        if (trr != null){
+            labWorks = trr;
+        }
     }
 
     public void addLabWorkToCollection(String key, LabWork labWork) {
@@ -202,15 +211,8 @@ public class CollectionManager {
         try {
             if (!labWorks.isEmpty()) {
                 Set<Map.Entry<String, LabWork>> labs = labWorks.entrySet();
-                for (Map.Entry<String, LabWork> i : labs) {
-                    labWorks1.add(i);
-                }
-                labWorks1.sort(new Comparator<Map.Entry<String, LabWork>>() {
-                    @Override
-                    public int compare(Map.Entry<String, LabWork> o1, Map.Entry<String, LabWork> o2) {
-                        return o1.getValue().getName().compareTo(o2.getValue().getName());
-                    }
-                });
+                labWorks1.addAll(labs);
+                labWorks1.sort((o1, o2) -> -o1.getValue().getName().compareTo(o2.getValue().getName()));
                 for (Map.Entry<String, LabWork> i : labWorks1) {
                     labWorkToOutput(i.getKey(), i.getValue());
                 }
@@ -222,6 +224,6 @@ public class CollectionManager {
     }
 
     public void saveCollection() {
-
+        fileManager.saveCollection(labWorks);
     }
 }

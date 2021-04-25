@@ -2,6 +2,9 @@ package labwork;
 
 import java.util.Objects;
 
+/**
+ * Person.
+ */
 public class Person {
     private String name; //Поле не может быть null, Строка не может быть пустой
     private long height; //Значение поля должно быть больше 0

@@ -15,6 +15,7 @@ vatican
 9
 78.0
 
+execute_script script.txt
 insert key
 name
 54
@@ -22,15 +23,17 @@ name
 76
 87
 98
-hard
-authorino
-18
-red
-green
-france
-74
-94
-78.3
-Loc
+
+
+
+
+
+
+
+
+
+
+
 info
 print_descending
+info

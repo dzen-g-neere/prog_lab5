@@ -6,6 +6,9 @@ import labwork.LabWork;
 import utility.CollectionManager;
 import utility.LabWorkAsker;
 
+/**
+ * This is command 'replace_if_lowe'. Replaces element by key if new element is less than old one.
+ */
 public class ReplaceIfLowerCommand extends AbstractCommand implements Command {
     CollectionManager collectionManager;
     LabWorkAsker labWorkAsker;
@@ -16,6 +19,9 @@ public class ReplaceIfLowerCommand extends AbstractCommand implements Command {
         this.labWorkAsker = labWorkAsker;
     }
 
+    /**
+     * Execute of 'replace_if_lowe' command.
+     */
     @Override
     public void execute(String argument) throws IncorrectScriptException {
         LabWork labWorkNew = new LabWork(

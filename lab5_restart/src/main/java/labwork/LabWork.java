@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Labwork. Is stored in the collection.
+ */
 public class LabWork implements Comparable<LabWork>{
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -16,11 +19,7 @@ public class LabWork implements Comparable<LabWork>{
     private Person author; //Поле может быть null
 
     public LabWork(Integer id,String name, Coordinates coordinates, Date creationDate, Long minimalPoint, long personalQualitiesMinimum, float averagePoint, Difficulty difficulty, Person author) {
-        //TODO
-        // -id generator
-        // -creationDate generator
         this.id = id;
-        //Cringe;12;23.1;4;6;5;IMPOSSIBLE;Ondrey;175;RED;BROWN;FRANCE;36;98;12.56;London
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;

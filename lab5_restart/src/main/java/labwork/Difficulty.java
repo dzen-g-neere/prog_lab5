@@ -1,5 +1,8 @@
 package labwork;
 
+/**
+ * Difficulty of labwork.
+ */
 public enum Difficulty {
     HARD("HARD"),
     VERY_HARD("VERY_HARD"),

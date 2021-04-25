@@ -2,18 +2,26 @@ package utility;
 
 import exceptions.IncorrectScriptException;
 import exceptions.NoFileAccessException;
+import exceptions.ScriptRecursionException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import static java.lang.Thread.sleep;
+
+/**
+ * Operates command input.
+ */
 public class ConsoleManager {
 
     CommandManager commandManager;
     LabWorkAsker labWorkAsker;
     FileManager fileManager;
     private Scanner scanner;
+    private HashSet<String> scriptsInProcess = new HashSet<String>();
 
     public ConsoleManager(Scanner scanner, CommandManager commandManager, LabWorkAsker labWorkAsker) {
         this.scanner = scanner;
@@ -22,6 +30,9 @@ public class ConsoleManager {
         this.labWorkAsker = labWorkAsker;
     }
 
+    /**
+     * Mode for work with commands from user input.
+     */
     public void interectiveMode() {
         String[] command;
         try {
@@ -31,7 +42,7 @@ public class ConsoleManager {
                 command[1] = command[1].trim();
                 runCommand(command);
             }
-        } catch (NoSuchElementException exception) {
+        } catch (NoSuchElementException e) {
             System.out.println("Введён конец файла! Завершение программы.");
             System.exit(0);
         } catch (IncorrectScriptException e) {
@@ -40,6 +51,9 @@ public class ConsoleManager {
 
     }
 
+    /**
+     * Mode for work with commands from a script.
+     */
     public void scriptMode(String argument) {
         String[] command;
         boolean isReadable = true;
@@ -50,8 +64,6 @@ public class ConsoleManager {
             if (file.exists() && !file.canRead()) {
                 isReadable = false;
                 throw new NoFileAccessException();
-            } else if (file.exists()) {
-                isReadable = true;
             }
         } catch (NoFileAccessException e) {
             System.out.println("Расширьте права файла на чтение и запись, и попробуйте снова.");
@@ -70,12 +82,15 @@ public class ConsoleManager {
                     }
                     System.out.println(String.join(" ", command));
                     try {
+                        if (command[0].equals("execute_script")) {
+                            if (scriptsInProcess.contains(command[1]))
+                                throw new ScriptRecursionException();
+                            else scriptsInProcess.add(command[1]);
+                        }
                         runCommand(command);
-                    } catch (StackOverflowError e) {
-                        System.out.println("Похоже ваш скрипт рекурсивно вызывает сам себя. " +
-                                "Чтобы избежать завершения программы, данная команда не будет выполнена");
+                    } catch (ScriptRecursionException e) {
+                        System.out.println("В вашем скрипте присутствует бесконечная рекурсия. Скрипт продолжит выполняться со следующей команды.");
                     }
-
                 } while (scriptScanner.hasNextLine());
             } catch (FileNotFoundException exception) {
                 System.out.println("Файл со скриптом не найден!");
@@ -91,11 +106,17 @@ public class ConsoleManager {
         labWorkAsker.setScriptMode(false);
     }
 
+    /**
+     * Selects and start command execution.
+     */
     public void runCommand(String[] userCommand) throws IncorrectScriptException {
         try {
             switch (userCommand[0]) {
                 case "insert":
                     commandManager.insertLWToCollection(userCommand[1]);
+                    break;
+                case "update":
+                    commandManager.updateID(userCommand[1]);
                     break;
                 case "show":
                     commandManager.showCollection(userCommand[1]);
@@ -117,7 +138,7 @@ public class ConsoleManager {
                     break;
                 case "execute_script":
                     scriptMode(userCommand[1]);
-                break;
+                    break;
                 case "exit":
                     commandManager.exit(userCommand[1]);
                     break;

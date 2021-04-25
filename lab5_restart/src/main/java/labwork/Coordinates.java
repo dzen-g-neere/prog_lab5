@@ -2,6 +2,9 @@ package labwork;
 
 import java.util.Objects;
 
+/**
+ * Coordinates.
+ */
 public class Coordinates {
     private Integer x; //Поле не может быть null
     private Float y; //Максимальное значение поля: 807, Поле не может быть null

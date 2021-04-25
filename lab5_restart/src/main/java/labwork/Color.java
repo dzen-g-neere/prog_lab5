@@ -1,5 +1,8 @@
 package labwork;
 
+/**
+ * Color.
+ */
 public enum Color {
     RED("RED"),
     ORANGE("ORANGE"),

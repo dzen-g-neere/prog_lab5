@@ -1,11 +1,15 @@
 package commands;
 
 import exceptions.IncorrectScriptException;
+import exceptions.WrongArgumentException;
 import labwork.LabWork;
 import utility.CollectionManager;
 import utility.LabWorkAsker;
 
-public class InsertCommand extends AbstractCommand{
+/**
+ * This is command 'insert'. Inserts a new element to collection.
+ */
+public class InsertCommand extends AbstractCommand {
     CollectionManager collectionManager;
     LabWorkAsker labWorkAsker;
 
@@ -15,10 +19,14 @@ public class InsertCommand extends AbstractCommand{
         this.labWorkAsker = labWorkAsker;
     }
 
+    /**
+     * Execute of 'insert' command.
+     */
     @Override
-    public void execute(String argument) throws IncorrectScriptException{
+    public void execute(String argument) throws IncorrectScriptException {
 //        Integer id,String name, Coordinates coordinates, Date creationDate, Long minimalPoint, long personalQualitiesMinimum, float averagePoint, Difficulty difficulty, Person author
         try {
+            labWorkAsker.checkKey(argument.trim());
             collectionManager.addLabWorkToCollection(
                     argument.trim(),
                     new LabWork(
@@ -33,8 +41,10 @@ public class InsertCommand extends AbstractCommand{
                             labWorkAsker.askAuthor()
                     )
             );
-        } catch (IncorrectScriptException e){
+        } catch (IncorrectScriptException e) {
             throw new IncorrectScriptException();
+        } catch (WrongArgumentException e) {
+            System.out.println("Ключ не может содержать символ ';'");
         }
     }
 }

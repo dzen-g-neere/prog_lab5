@@ -10,12 +10,18 @@ public class ReplaceIfGreaterCommand extends AbstractCommand implements Command 
     CollectionManager collectionManager;
     LabWorkAsker labWorkAsker;
 
+    /**
+     * This is command 'replace_if_greater'. Replaces element by key if new element is more than old one.
+     */
     public ReplaceIfGreaterCommand(CollectionManager collectionManager, LabWorkAsker labWorkAsker) {
         super("replace_if_greater", " \"key\" - заменить значение по ключу, если новое значение больше старого");
         this.collectionManager = collectionManager;
         this.labWorkAsker = labWorkAsker;
     }
 
+    /**
+     * Execute of 'replace_if_greater' command.
+     */
     @Override
     public void execute(String argument) throws IncorrectScriptException {
         LabWork labWorkNew = new LabWork(

@@ -2,6 +2,7 @@ package utility;
 
 import commands.*;
 import exceptions.IncorrectScriptException;
+import labwork.LabWork;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,9 @@ public class CommandManager {
     private SaveCommand saveCommand;
 
 
+    /**
+     * Operates with the commands.
+     */
     public CommandManager(
             InsertCommand insertCommand,
             ShowCommand showCommand,
@@ -79,6 +83,9 @@ public class CommandManager {
         commandArrayList.add(saveCommand);
     }
 
+    /**
+     * Start execute of 'insert' command.
+     */
     public void insertLWToCollection(String arg) throws IncorrectScriptException {
         try {
             insertCommand.execute(arg);
@@ -88,6 +95,9 @@ public class CommandManager {
 
     }
 
+    /**
+     * Start execute of 'help' command.
+     */
     public void help(String argument) {
         if (argument.equals("")) {
             helpCommand.execute(argument);
@@ -99,34 +109,58 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Start execute of 'show' command.
+     */
     public void showCollection(String arg) {
         showCommand.execute(arg);
     }
 
+    /**
+     * Start execute of 'info' command.
+     */
     public void info(String arg) {
         infoCommand.execute(arg);
     }
 
+    /**
+     * Start execute of 'remove_key' command.
+     */
     public void remove_key(String s) {
         removeKeyCommand.execute(s);
     }
 
+    /**
+     * Start execute of 'clear' command.
+     */
     public void clear(String s) {
         clearCommand.execute(s);
     }
 
+    /**
+     * Start execute of 'save' command.
+     */
     public void save(String s) {
         saveCommand.execute(s);
     }
 
+    /**
+     * Start execute of 'execute_script' command.
+     */
     public void execute_script(String s) {
         executeScriptCommand.execute(s);
     }
 
+    /**
+     * Start execute of 'exit' command.
+     */
     public void exit(String s) {
         exitCommand.execute(s);
     }
 
+    /**
+     * Start execute of 'replace_if_greater' command.
+     */
     public void replace_if_greater(String s) throws IncorrectScriptException{
         try {
             replaceIfGreaterCommand.execute(s);
@@ -135,6 +169,9 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Start execute of 'replace_if_lowe' command.
+     */
     public void replace_if_lowe(String s) throws IncorrectScriptException{
         try {
             replaceIfLowerCommand.execute(s);
@@ -143,19 +180,38 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Start execute of 'remove_greater_key' command.
+     */
     public void remove_greater_key(String s) {
         removeGreaterKey.execute(s);
     }
 
+    /**
+     * Start execute of 'group_counting_by_creation_date' command.
+     */
     public void group_counting_by_creation_date(String s) {
         groupCountingByCreationDateCommand.execute(s);
     }
 
+    /**
+     * Start execute of 'filter_greater_than_average_point' command.
+     */
     public void filter_greater_than_average_point(String s) {
         filterGreaterThanAveragePointCommand.execute(s);
     }
 
+    /**
+     * Start execute of 'print_descending' command.
+     */
     public void print_descending(String s) {
         printDescendingCommand.execute(s);
+    }
+
+    /**
+     * Start execute of 'update' command.
+     */
+    public void updateID(String s) throws IncorrectScriptException{
+        updateIDCommand.execute(s);
     }
 }

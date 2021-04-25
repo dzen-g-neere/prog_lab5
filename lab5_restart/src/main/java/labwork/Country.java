@@ -1,5 +1,8 @@
 package labwork;
 
+/**
+ * Nationality.
+ */
 public enum Country {
     FRANCE("FRANCE"),
     VATICAN("VATICAN"),

@@ -2,7 +2,9 @@ package commands;
 
 import exceptions.IncorrectScriptException;
 import utility.ConsoleManager;
-
+/**
+ * This is command 'execute_script'. It executes commands from script.
+ */
 public class ExecuteScriptCommand extends AbstractCommand implements Command{
 
     public ExecuteScriptCommand() {
@@ -10,7 +12,9 @@ public class ExecuteScriptCommand extends AbstractCommand implements Command{
                 "В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме");
 
     }
-
+    /**
+     * Execute of 'execute_script' command.
+     */
     @Override
     public void execute(String argument) {
 

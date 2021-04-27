@@ -8,6 +8,7 @@ import labwork.Location;
 import labwork.Person;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class CollectionManager {
@@ -20,9 +21,9 @@ public class CollectionManager {
         creationDate = LocalDate.now();
     }
 
-    public void loadCollection(){
+    public void loadCollection() {
         HashMap<String, LabWork> trr = fileManager.loadCollection();
-        if (trr != null){
+        if (trr != null) {
             labWorks = trr;
         }
     }
@@ -113,7 +114,9 @@ public class CollectionManager {
         labWorks.clear();
     }
 
-    public Map.Entry<String, LabWork> findByID(int ID) throws WrongIDException {
+    public Map.Entry<String, LabWork> findByID(int ID) throws WrongIDException, EmptyCollectionException {
+        if (labWorks.isEmpty())
+            throw new EmptyCollectionException();
         Set<Map.Entry<String, LabWork>> labs = labWorks.entrySet();
         for (Map.Entry<String, LabWork> i : labs) {
             if (i.getValue().getId() == ID) {
@@ -147,19 +150,17 @@ public class CollectionManager {
 
     public void removeGreaterKey(String key) {
         try {
+            if (key == null) throw new WrongArgumentException();
             if (!labWorks.isEmpty()) {
-                Set<Map.Entry<String, LabWork>> labs = labWorks.entrySet();
-                for (Map.Entry<String, LabWork> i : labs) {
-                    String key1 = i.getKey();
-                    if (key1.compareTo(key) > 0) {
-                        removeKey(key1);
-                    }
-                }
+                labWorks.entrySet().removeIf(stringLabWorkEntry -> key.compareTo(stringLabWorkEntry.getKey()) < 0);
             } else throw new EmptyCollectionException();
-
+            System.out.println("Команда выполнена");
         } catch (EmptyCollectionException emptyCollectionException) {
             System.out.println("В коллекции нет элементов");
+        } catch (WrongArgumentException WrongArgumentException) {
+            System.out.println("Аргумент не может быть пустой строкой");
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Непредвиденная ошибка");
         }
     }
@@ -167,21 +168,21 @@ public class CollectionManager {
     public void groupCountingByCrDate() {
         try {
             if (!labWorks.isEmpty()) {
-                HashMap<Date, Integer> labsHashMap = new HashMap<Date, Integer>();
+                HashMap<LocalDate, Integer> labsHashMap = new HashMap<LocalDate, Integer>();
                 Set<Map.Entry<String, LabWork>> labsSet = labWorks.entrySet();
                 for (Map.Entry<String, LabWork> i : labsSet) {
                     String key = i.getKey();
                     LabWork labWork = i.getValue();
-                    if (!labsHashMap.containsKey(labWork.getCreationDate())) {
-                        labsHashMap.put(labWork.getCreationDate(), 1);
+                    if (!labsHashMap.containsKey(labWork.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
+                        labsHashMap.put(labWork.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), 1);
                     } else {
-                        int sum = labsHashMap.get(labWork.getCreationDate());
+                        int sum = labsHashMap.get(labWork.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                         sum++;
-                        labsHashMap.remove(labWork.getCreationDate());
-                        labsHashMap.put(labWork.getCreationDate(), sum);
+                        labsHashMap.remove(labWork.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                        labsHashMap.put(labWork.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), sum);
                     }
                 }
-                for (Map.Entry<Date, Integer> i : labsHashMap.entrySet()) {
+                for (Map.Entry<LocalDate, Integer> i : labsHashMap.entrySet()) {
                     System.out.println(i.getKey() + " - " + i.getValue());
                 }
             } else System.out.println("В коллекции нет ни одного элемента.");
@@ -193,11 +194,16 @@ public class CollectionManager {
     public void filterGreaterThanAveragePoint(float averagePoint) {
         try {
             if (!labWorks.isEmpty()) {
+                boolean trigger = false;
                 Set<Map.Entry<String, LabWork>> labsForOutput = labWorks.entrySet();
                 for (Map.Entry<String, LabWork> i : labsForOutput) {
                     if (i.getValue().getAveragePoint() > averagePoint) {
                         labWorkToOutput(i.getKey(), i.getValue());
+                        trigger = true;
                     }
+                }
+                if (!trigger) {
+                    System.out.println("Элементов с average_point большим " + averagePoint + " не обнаружено");
                 }
             } else throw new EmptyCollectionException();
 

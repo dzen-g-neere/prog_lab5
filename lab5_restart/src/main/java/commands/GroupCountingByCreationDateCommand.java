@@ -1,6 +1,7 @@
 package commands;
 
 import exceptions.IncorrectScriptException;
+import exceptions.WrongArgumentException;
 import utility.CollectionManager;
 import utility.LabWorkAsker;
 
@@ -19,6 +20,15 @@ public class GroupCountingByCreationDateCommand extends AbstractCommand implemen
      */
     @Override
     public void execute(String argument) {
-        collectionManager.groupCountingByCrDate();
+        try {
+            if (!argument.isEmpty()) {
+                throw new WrongArgumentException();
+            }
+            collectionManager.groupCountingByCrDate();
+        } catch (WrongArgumentException e) {
+            System.out.println("Используйте: '" + getName() + "'");
+        } catch (Exception e) {
+            System.out.println("Ошибка. Повторите ввод.");
+        }
     }
 }

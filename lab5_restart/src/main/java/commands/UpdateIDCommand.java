@@ -1,5 +1,6 @@
 package commands;
 
+import exceptions.EmptyCollectionException;
 import exceptions.IncorrectScriptException;
 import exceptions.WrongIDException;
 import labwork.LabWork;
@@ -11,7 +12,7 @@ import java.util.Map;
 /**
  * This is command 'update'. Refreshes an element of collection which id equals given one.
  */
-public class UpdateIDCommand extends AbstractCommand implements Command{
+public class UpdateIDCommand extends AbstractCommand implements Command {
     CollectionManager collectionManager;
     LabWorkAsker labWorkAsker;
 
@@ -20,6 +21,7 @@ public class UpdateIDCommand extends AbstractCommand implements Command{
         this.collectionManager = collectionManager;
         this.labWorkAsker = labWorkAsker;
     }
+
     /**
      * Execute of 'update' command.
      */
@@ -42,12 +44,15 @@ public class UpdateIDCommand extends AbstractCommand implements Command{
                             labWorkAsker.askDifficulty(),
                             labWorkAsker.askAuthor()
                     )
-                    );
-        } catch (WrongIDException e){
+            );
+        } catch (WrongIDException | NullPointerException e) {
             System.out.println("Элемента с заданным id нет в коллекции");
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("ID должен быть целым числом");
-        } catch (Exception e){
+        } catch (EmptyCollectionException e) {
+            System.out.println("Коллекция пуста");
+        } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Непредвиденная ошибка");
         }
     }

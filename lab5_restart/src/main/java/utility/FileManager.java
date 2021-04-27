@@ -85,10 +85,11 @@ public class FileManager {
                         str.append(";");
                 } else
                     str.append(";;;;;;;;;");
-                System.out.println("Коллекция успешно сохранена");
+
                 printWriter.println(str);
                // System.out.println(str);
             }
+            System.out.println("Коллекция успешно сохранена");
             printWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден.");

@@ -35,7 +35,8 @@ public class FileManager {
     public void saveCollection(HashMap<String, LabWork> labWorks) {
         File data = new File(envVariable);
         try {
-            if (!data.canWrite()){
+            if (!data.canWrite()) {
+                System.out.println("Нет прав на запись, коллекция будет записана в файл backup");
                 throw new NoFileAccessException();
             }
             FileOutputStream fileOutputStream = new FileOutputStream(data);
@@ -47,7 +48,6 @@ public class FileManager {
                 String key = i.getKey();
                 LabWork labWork = i.getValue();
                 str.append(key).append(";");
-                str.append(labWork.getName()).append(";");
                 str.append(labWork.getCoordinates().getX()).append(";");
                 str.append(labWork.getCoordinates().getY()).append(";");
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -87,14 +87,16 @@ public class FileManager {
                     str.append(";;;;;;;;;");
 
                 printWriter.println(str);
-               // System.out.println(str);
+                // System.out.println(str);
             }
             System.out.println("Коллекция успешно сохранена");
             printWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден.");
-        } catch (NoFileAccessException | SecurityException e){
+        } catch (NoFileAccessException | SecurityException e) {
             System.out.println("Нет доступа к файлу, добавьте права на запись.");
+            envVariable = "backup";
+            saveCollection(labWorks);
         }
     }
 
@@ -125,7 +127,7 @@ public class FileManager {
                     String key = labWorkAsker.askKey();
                     LabWork labWork = new LabWork(
                             labWorkAsker.askID(),
-                            labWorkAsker.askName(),
+                            key,
                             labWorkAsker.askCoordinates(),
                             labWorkAsker.askDateForFile(),
                             labWorkAsker.askMinimalPoint(),
@@ -134,6 +136,7 @@ public class FileManager {
                             labWorkAsker.askDifficulty(),
                             labWorkAsker.askAuthor()
                     );
+                    labWork.setName(key);
                     collection.put(key, labWork);
                 } catch (Exception e) {
                     if (!isItOk) {
@@ -145,6 +148,7 @@ public class FileManager {
                         if (s.equals("yes")) {
                             isItOk = true;
                         }
+                        else return new HashMap<String, LabWork>();
                     }
                 }
 
@@ -156,7 +160,7 @@ public class FileManager {
             System.out.println("Файл успешно считан");
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден.");
-            File file = new File("backup");
+            /*File file = new File("backup");
             if (file.exists() && file.canRead()){
                 System.out.println("Обнаружен резервный файл сохранения. Вы хотите загрузить его? Введите 'yes', если да,  любую иную строку, если нет");
                 Scanner scanner = new Scanner(System.in);
@@ -170,13 +174,14 @@ public class FileManager {
                 if (s.toLowerCase().equals("yes")){
                     return loadBackup();
                 }
-            }
+            }*/
         } catch (SecurityException e) {
             System.out.println("Нет доступа к файлу, указанному в переменной окружения. Добавьте права на чтение и запись.");
         } catch (NullPointerException e) {
             System.out.println("Переменная окружения не задана. Задайте переменную окружения и попробуйте снова.");
         } catch (NoFileAccessException e) {
             System.out.println("Расширьте права файла на чтение и запись, и попробуйте снова.");
+            System.exit(0);
         }
         labWorkAsker.setScriptMode(false);
         labWorkAsker.setFileMode(false);
@@ -234,7 +239,7 @@ public class FileManager {
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден.");
             File file = new File("backup");
-            if (file.exists()&& file.canRead()){
+            if (file.exists() && file.canRead()) {
                 System.out.println();
             }
         } catch (SecurityException e) {

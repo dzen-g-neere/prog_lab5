@@ -24,23 +24,27 @@ public class ReplaceIfGreaterCommand extends AbstractCommand implements Command 
      */
     @Override
     public void execute(String argument) throws IncorrectScriptException {
-        LabWork labWorkNew = new LabWork(
-                labWorkAsker.askID(),
-                labWorkAsker.askName(),
-                labWorkAsker.askCoordinates(),
-                labWorkAsker.askDate(),
-                labWorkAsker.askMinimalPoint(),
-                labWorkAsker.askPersonalQualitiesMinimum(),
-                labWorkAsker.askAveragePoint(),
-                labWorkAsker.askDifficulty(),
-                labWorkAsker.askAuthor()
-        );
+
+
         LabWork labWorkOld;
         try {
+            if (argument.isEmpty()) throw new WrongArgumentException();
             labWorkOld = collectionManager.getByKey(argument);
+            LabWork labWorkNew = new LabWork(
+                    labWorkOld.getId(),
+                    labWorkAsker.askName(),
+                    labWorkAsker.askCoordinates(),
+                    labWorkAsker.askDate(),
+                    labWorkAsker.askMinimalPoint(),
+                    labWorkAsker.askPersonalQualitiesMinimum(),
+                    labWorkAsker.askAveragePoint(),
+                    labWorkAsker.askDifficulty(),
+                    labWorkAsker.askAuthor()
+            );
             if (labWorkNew.compareTo(labWorkOld) > 0) {
                 collectionManager.removeKey(argument);
-                collectionManager.addLabWorkToCollection(argument, labWorkNew);
+                collectionManager.addLabWorkToCollection(labWorkNew.getName(), labWorkNew);
+                System.out.println("Замена успешна");
             }
         } catch (WrongArgumentException e) {
             System.out.println("Аргумент " + argument + " некорректен");

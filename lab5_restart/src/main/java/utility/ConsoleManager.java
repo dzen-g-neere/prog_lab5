@@ -16,7 +16,7 @@ import static java.lang.Thread.sleep;
  * Operates command input.
  */
 public class ConsoleManager {
-
+    static int recurs = 0;
     CommandManager commandManager;
     LabWorkAsker labWorkAsker;
     FileManager fileManager;
@@ -83,12 +83,25 @@ public class ConsoleManager {
                     System.out.println(String.join(" ", command));
                     try {
                         if (command[0].equals("execute_script")) {
-                            if (scriptsInProcess.contains(command[1]))
-                                throw new ScriptRecursionException();
-                            else scriptsInProcess.add(command[1]);
+                            if (scriptsInProcess.contains(command[1]) && recurs > 1000) {
+                                System.out.println("В вашем скрипте присутствует бесконечная рекурсия. Продолжить выполнение? yes/no");
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    if (scanner.hasNextLine()) {
+                                        String line = scanner.nextLine();
+                                        if (line.equals("yes"))
+                                            recurs = 0;
+                                        else continue;
+                                    }
+                                } catch (NoSuchElementException e) {
+                                    System.exit(0);
+                                }
+                            } else if (scriptsInProcess.contains(command[1])) {
+                                recurs++;
+                            } else scriptsInProcess.add(command[1]);
                         }
                         runCommand(command);
-                    } catch (ScriptRecursionException e) {
+                    } catch (Error e) {
                         System.out.println("В вашем скрипте присутствует бесконечная рекурсия. Скрипт продолжит выполняться со следующей команды.");
                     }
                 } while (scriptScanner.hasNextLine());
@@ -102,6 +115,7 @@ public class ConsoleManager {
                 System.out.println("Ошибка. Перезапустите программу.");
             }
         }
+        recurs = 0;
         labWorkAsker.setUserScanner(temp);
         labWorkAsker.setScriptMode(false);
     }

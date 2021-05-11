@@ -26,12 +26,13 @@ public class InsertCommand extends AbstractCommand {
     public void execute(String argument) throws IncorrectScriptException {
 //        Integer id,String name, Coordinates coordinates, Date creationDate, Long minimalPoint, long personalQualitiesMinimum, float averagePoint, Difficulty difficulty, Person author
         try {
+            if (argument.isEmpty()) throw new WrongArgumentException();
             labWorkAsker.checkKey(argument.trim());
             collectionManager.addLabWorkToCollection(
                     argument.trim(),
                     new LabWork(
                             labWorkAsker.askID(),
-                            labWorkAsker.askName(),
+                            argument,
                             labWorkAsker.askCoordinates(),
                             labWorkAsker.askDate(),
                             labWorkAsker.askMinimalPoint(),
@@ -44,7 +45,7 @@ public class InsertCommand extends AbstractCommand {
         } catch (IncorrectScriptException e) {
             throw new IncorrectScriptException();
         } catch (WrongArgumentException e) {
-            System.out.println("Ключ не может содержать символ ';'");
+            System.out.println("Ключ не может содержать символ ';', ключ не может быть пустой строкой");
         }
     }
 }

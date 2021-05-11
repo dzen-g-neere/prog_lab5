@@ -35,47 +35,47 @@ public class CollectionManager {
     public void labWorkToOutput(String key, LabWork labWork) {
         System.out.println("key: " + key);
         System.out.println("id: " + labWork.getId());
-        System.out.println("  Название: " + labWork.getName());
-        System.out.println("  Координаты:");
-        System.out.println("    x: " + labWork.getCoordinates().getX());
-        System.out.println("    y: " + labWork.getCoordinates().getY());
-        System.out.println("  Дата создания: " + labWork.getCreationDate());
-        System.out.println("  Минимальный балл: " + labWork.getMinimalPoint());
-        System.out.println("  Мин. балл за л.к.: " + labWork.getPersonalQualitiesMinimum());
-        System.out.println("  Средний балл: " + labWork.getAveragePoint());
+        System.out.println("    Название: " + labWork.getName());
+        System.out.println("     Координаты:");
+        System.out.println("        x: " + labWork.getCoordinates().getX());
+        System.out.println("        y: " + labWork.getCoordinates().getY());
+        System.out.println("    Дата создания: " + labWork.getCreationDate());
+        System.out.println("    Минимальный балл: " + labWork.getMinimalPoint());
+        System.out.println("    Мин. балл за л.к.: " + labWork.getPersonalQualitiesMinimum());
+        System.out.println("    Средний балл: " + labWork.getAveragePoint());
         try {
-            System.out.println("  Сложность: " + labWork.getDifficulty().getName());
+            System.out.println("    Сложность: " + labWork.getDifficulty().getName());
         } catch (Exception e) {
-            System.out.println("  Сложность: " + null);
+            System.out.println("    Сложность: " + null);
         }
         Person author = labWork.getAuthor();
         if (author != null) {
             Location authorLocation = author.getLocation();
-            System.out.println("  Автор:");
-            System.out.println("    Имя: " + author.getName());
-            System.out.println("    Рост: " + author.getHeight());
+            System.out.println("    Автор:");
+            System.out.println("        Имя: " + author.getName());
+            System.out.println("        Рост: " + author.getHeight());
             try {
-                System.out.println("    Цвет глаз: " + author.getEyeColor().getName());
+                System.out.println("        Цвет глаз: " + author.getEyeColor().getName());
             } catch (Exception e) {
-                System.out.println("    Цвет глаз: " + null);
+                System.out.println("        Цвет глаз: " + null);
             }
             try {
-                System.out.println("    Цвет волос: " + author.getHairColor().getName());
+                System.out.println("        Цвет волос: " + author.getHairColor().getName());
             } catch (Exception e) {
-                System.out.println("    Цвет волос: " + null);
+                System.out.println("        Цвет волос: " + null);
             }
             try {
-                System.out.println("    Национальность: " + author.getNationality().getName());
+                System.out.println("        Национальность: " + author.getNationality().getName());
             } catch (Exception e) {
-                System.out.println("    Национальность: " + author.getNationality().getName());
+                System.out.println("        Национальность: " + author.getNationality().getName());
             }
-            System.out.println("    Местоположение: ");
-            System.out.println("      Локация: " + authorLocation.getName());
-            System.out.println("      x: " + authorLocation.getX());
-            System.out.println("      y: " + authorLocation.getY());
-            System.out.println("      z: " + authorLocation.getZ());
+            System.out.println("        Местоположение: ");
+            System.out.println("            Локация: " + authorLocation.getName());
+            System.out.println("                x: " + authorLocation.getX());
+            System.out.println("                y: " + authorLocation.getY());
+            System.out.println("                z: " + authorLocation.getZ());
         } else
-            System.out.println("  Автор: null");
+            System.out.println("    Автор: null");
     }
 
     public void showCollection() {

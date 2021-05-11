@@ -1,6 +1,7 @@
 package commands;
 
 import exceptions.IncorrectScriptException;
+import exceptions.WrongArgumentException;
 import utility.CollectionManager;
 
 /**
@@ -19,6 +20,12 @@ public class RemoveGreaterKey extends AbstractCommand implements Command{
      */
     @Override
     public void execute(String argument) {
-        collectionManager.removeGreaterKey(argument);
+
+        try {
+            if (argument.isEmpty()) throw new WrongArgumentException();
+            collectionManager.removeGreaterKey(argument);
+        } catch (WrongArgumentException e){
+            System.out.println("Некорректный аргумент");
+        }
     }
 }

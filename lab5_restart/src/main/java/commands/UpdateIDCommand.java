@@ -27,17 +27,16 @@ public class UpdateIDCommand extends AbstractCommand implements Command {
      */
     @Override
     public void execute(String argument) throws IncorrectScriptException {
-        int id;
         try {
-            id = Integer.parseInt(argument);
-            Map.Entry<String, LabWork> pair = collectionManager.findByID(id);
+            int i = Integer.parseInt(argument);
+            LabWork labWork = collectionManager.getByKey(argument);
             collectionManager.addLabWorkToCollection(
-                    pair.getKey(),
+                    argument,
                     new LabWork(
-                            id,
-                            labWorkAsker.askName(),
+                            labWork.getId(),
+                            labWork.getName(),
                             labWorkAsker.askCoordinates(),
-                            pair.getValue().getCreationDate(),
+                            labWork.getCreationDate(),
                             labWorkAsker.askMinimalPoint(),
                             labWorkAsker.askPersonalQualitiesMinimum(),
                             labWorkAsker.askAveragePoint(),
@@ -45,12 +44,8 @@ public class UpdateIDCommand extends AbstractCommand implements Command {
                             labWorkAsker.askAuthor()
                     )
             );
-        } catch (WrongIDException | NullPointerException e) {
-            System.out.println("Элемента с заданным id нет в коллекции");
         } catch (NumberFormatException e) {
             System.out.println("ID должен быть целым числом");
-        } catch (EmptyCollectionException e) {
-            System.out.println("Коллекция пуста");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Непредвиденная ошибка");
